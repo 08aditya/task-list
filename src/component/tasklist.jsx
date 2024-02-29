@@ -34,6 +34,7 @@ const Tasklist = () => {
             localStorage.setItem("tasks", JSON.stringify(updatedTasks));
             return updatedTasks;
         })
+        handelfilter('')
     }
 
     const handleToggle = (TaskId) => {
@@ -67,10 +68,8 @@ const Tasklist = () => {
     const handelfilter = (type) => {
         setFltrcat(() => {
             const filteredTasks = Tasks.filter((task) => type === task.type);
-            console.log(filteredTasks, type);
             return filteredTasks;
         });
-        setaddtask(type)
     }
 
     return (
@@ -80,15 +79,16 @@ const Tasklist = () => {
                 <div className='add-task-bar'>
                     <TaskForm createtask={addTask} />
                 </div>
-                <div>
-                    <h3>{Tasks.length > 1 ? "Tasks" : "Task"} List</h3>
+                <h3>{Tasks.length > 1 ? "Tasks" : "Task"} List</h3>
 
-                    <select name="filter" onChange={(e) => { handelfilter(e.target.value) }}>
+                <div className='add-task-bar'>
+                    <select name="filter" value={Addtask} onChange={(e) => { setaddtask(e.target.value) }} className="add-task-input">
                         <option value=" ">select filter</option>
                         <option value='personal'>Personal</option>
                         <option value="work">work</option>
                         <option value="other">other</option>
                     </select>
+                    <button onClick={() => handelfilter(Addtask)} className="add-task-button"> search</button>
                 </div>
 
                 <ul className="task-list">{
@@ -116,31 +116,19 @@ const Tasklist = () => {
                     })}
                 </ul>
                 <hr />
-                <h3>filter task by type {Addtask}</h3>
-                <ul className='task-list'>
-                    {fltrcat.map((task) => {
-                        return (
-                            <li key={task.id} className='task'>
-                                {task.isedit ?
-                                    <>
-                                        <input type='text' value={newtask} onChange={(e) => { setNewTask(e.target.value) }} />
-                                        <div className='button-container'>
-                                            <button onClick={() => { editTask(task.id) }}>save</button>
-                                            <button onClick={() => Deletetask(task.id)}>Delete</button>
-                                        </div>
-                                    </>
-                                    : <>
+                {fltrcat.length > 0 ?
+                    <>
+                        <h3>filter task by type {Addtask}</h3><ul className='task-list'>
+                            {fltrcat.map((task) => {
+                                return (
+                                    <li key={task.id} className='task'>
                                         <Taskitem data={task} onToggle={handleToggle} />
-                                        <div className='button-container'>
-                                            <button onClick={() => { toggeledit(task) }}>edit</button>
-                                            <button onClick={() => Deletetask(task.id)}>Delete</button>
-                                        </div>
-                                    </>
-                                }
-                            </li>
-                        )
-                    })}
-                </ul>
+                                    </li>
+                                )
+                            })}
+                        </ul>
+                    </>
+                    : " "}
             </div>
         </div>
     )

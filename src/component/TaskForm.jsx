@@ -11,8 +11,8 @@ const TaskForm = ({ createtask }) => {
     return (
         <>
             <input type='text' value={addTask} onChange={(e) => setaddtask(e.target.value)} className="add-task-input" placeholder='add task' />
-            <select name="category" onChange={(e) => { setCategory(e.target.value) }}>
-                <option selected>select category</option>
+            <select name="category" value={category} onChange={(e) => { setCategory(e.target.value) }} className="add-task-input">
+                <option>select category</option>
                 <option value='personal'>Personal</option>
                 <option value="work">work</option>
                 <option value="other">other</option>
